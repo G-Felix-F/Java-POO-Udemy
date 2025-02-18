@@ -13,46 +13,48 @@ public class Application {
 	
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.US);
-		ProdutoEntity produto1 = new ProdutoEntity(
-	            "Camiseta",
-	            "Camiseta de algodão branca",
-	            new BigDecimal("39.99"),
-	            50,
-	            ProdutoCategoriaEnum.ROUPAS,
-	            ProdutoStatusEnum.ATIVO
-	        );
+		System.out.println(addProduto());
+	}
+	
+	private static String addProduto() {
+	    String nome = JOptionPane.showInputDialog(null, "Nome do Produto:");
+	    String descricao = JOptionPane.showInputDialog(null, "Descrição do Produto:");
+	    
+	    BigDecimal preco = null;
+	    try {
+	        preco = BigDecimal.valueOf(Long.parseLong(JOptionPane.showInputDialog(null, "Preço do Produto:")));
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Preço inválido, por favor insira um valor numérico!");
+	        return null;
+	    }
 
- 	        ProdutoEntity produto2 = new ProdutoEntity(
- 	            "Notebook",
- 	            "Notebook para uso profissional",
- 	            new BigDecimal("2999.99"),
- 	            10,
- 	            ProdutoCategoriaEnum.ELETRONICOS,
- 	            ProdutoStatusEnum.ATIVO
- 	        );
- 
- 	        ProdutoEntity produto3 = new ProdutoEntity(
- 	            "Mesa de Escritório",
- 	            "Mesa de madeira para escritório",
- 	            new BigDecimal("499.99"),
- 	            20,
- 	            ProdutoCategoriaEnum.MOVEIS,
- 	            ProdutoStatusEnum.ATIVO
- 	        );
- 
- 	        ProdutoEntity produto4 = new ProdutoEntity(
- 	            "Fone de Ouvido",
- 	            "Fone de ouvido Bluetooth",
- 	            new BigDecimal("199.99"),
- 	            15,
- 	            ProdutoCategoriaEnum.ELETRONICOS,
- 	            ProdutoStatusEnum.INATIVO
- 	        );
+	    Integer estoque = null;
+	    try {
+	        estoque = Integer.parseInt(JOptionPane.showInputDialog(null, "Estoque do Produto:"));
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Estoque inválido, por favor insira um número inteiro!");
+	        return null;
+	    }
 
-	        JOptionPane.showMessageDialog(null, produto1.getInfoProduto() + 
- 	        									produto2.getInfoProduto() +
- 	        									produto3.getInfoProduto() +
- 	        									produto4.getInfoProduto());
+	    String categoriaInput = JOptionPane.showInputDialog(null, "Categoria do Produto (Ex: Eletrônicos, Roupas, etc.):");
+	    ProdutoCategoriaEnum categoria = null;
+	    try {
+	        categoria = ProdutoCategoriaEnum.fromString(categoriaInput);
+	    } catch (IllegalArgumentException e) {
+	        JOptionPane.showMessageDialog(null, "Categoria inválida, por favor insira uma categoria válida!");
+	        return null;
+	    }
 
+	    String statusInput = JOptionPane.showInputDialog(null, "Status do Produto (Ativo, Inativo, Em Promoção):");
+	    ProdutoStatusEnum status = null;
+	    try {
+	        status = ProdutoStatusEnum.fromString(statusInput);
+	    } catch (IllegalArgumentException e) {
+	        JOptionPane.showMessageDialog(null, "Status inválido, por favor insira um status válido!");
+	        return null;
+	    }
+
+	    ProdutoEntity produto = new ProdutoEntity(nome, descricao, preco, estoque, categoria, status);
+	    return produto.getInfoProduto();
 	}
 }
